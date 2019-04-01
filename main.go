@@ -21,7 +21,10 @@ func main() {
 		fatal_err(err)
 	}
 
-	ipcon.Connect(ADDR) // Connect to brickd.
+	iperr := ipcon.Connect(ADDR) // Connect to brickd.
+	if iperr != nil {
+		panic(iperr)
+	}
 	defer ipcon.Disconnect()
 	// Don't use device before ipcon is connected.
 
