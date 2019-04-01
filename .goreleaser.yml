@@ -34,4 +34,4 @@ changelog:
     - '^docs:'
     - '^test:'
 release:
-  name_template: "{{.ProjectName}}-v{{.ShortCommit}} {{.Env.USER}}"
+  name_template: "{{.Version}}-v{{.ShortCommit}}"
