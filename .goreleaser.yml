@@ -16,6 +16,7 @@ builds:
   ldflags:
     - -s -w -X main.commit={{.ShortCommit}} -X main.date={{.Date}}
 archive:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .ShortCommit }}_{{ .Os }}_{{ .Arch }}"
   replacements:
     darwin: Darwin
     linux: Linux
@@ -23,7 +24,7 @@ archive:
     386: i386
     amd64: x86_64
 checksum:
-  name_template: 'checksums.txt'
+  name_template: 'checksums_{{ .ShortCommit }}.txt'
 snapshot:
   name_template: "{{ .Tag }}-next"
 changelog:
@@ -32,3 +33,5 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
+release:
+  name_template: "{{.ProjectName}}-v{{.ShortCommit}} {{.Env.USER}}"
