@@ -3,3 +3,6 @@ build:
 
 clean:
 	rm musicbox
+
+release:
+	goreleaser release --skip-validate --rm-dist
