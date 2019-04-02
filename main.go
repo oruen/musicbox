@@ -10,6 +10,7 @@ const ADDR string = "localhost:4223"
 const UID string = "unT" // Change XYZ to the UID of your NFC Bricklet.
 
 func fatal_err(err error) {
+	fmt.Println(err)
 	panic(err)
 }
 
@@ -23,10 +24,12 @@ func main() {
 
 	iperr := ipcon.Connect(ADDR) // Connect to brickd.
 	if iperr != nil {
-		panic(iperr)
+		fatal_err(iperr)
 	}
 	defer ipcon.Disconnect()
 	// Don't use device before ipcon is connected.
+
+	nfc.SetResponseExpectedAll(true)
 
 	reg_status := nfc.RegisterReaderStateChangedCallback(func(state nfc_bricklet.ReaderState, idle bool) {
 		if state == nfc_bricklet.ReaderStateRequestTagIDReady {
@@ -40,16 +43,19 @@ func main() {
 		}
 		if idle {
 			nfc.ReaderRequestTagID()
+			fmt.Println("Idle...")
 		}
+		fmt.Println("Callback")
 	})
 
-	fmt.Printf("Callback register status %d\n", reg_status)
-
+	nfc.ReaderRequestTagID()
 	// Enable reader mode
 	mode_err := nfc.SetMode(nfc_bricklet.ModeReader)
 	if mode_err != nil {
 		fatal_err(err)
 	}
+
+	fmt.Printf("Callback register status %d\n", reg_status)
 
 	fmt.Print("Press enter to exit.")
 	fmt.Scanln()

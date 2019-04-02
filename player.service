@@ -1,0 +1,11 @@
+[Unit]
+Description=RFID musicbox
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/home/pi/player_launcher.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
