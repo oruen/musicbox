@@ -1,6 +1,6 @@
 [Unit]
 Description=RFID musicbox
-After=multi-user.target
+After=multi-user.target mopidy.service brickd.service
 
 [Service]
 Type=idle
