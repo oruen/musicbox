@@ -13,13 +13,16 @@ import sys
 
 tag_type = 0
 last_seen_tag = None
-tag_black = (4, 201, 175, 146, 158, 51, 128)
-tag_red = (4, 130, 161, 146, 158, 51, 128)
-songs = {1: "shapka.mp3",
-         2: "vorona.mp3",
-         3: "vinni-puh.mp3",
-         4: "buratino.mp3",
-         5: "utyata.mp3"}
+tags = [(4, 169, 119, 18, 43, 94, 128),
+        (4, 156, 235, 18, 43, 94, 128),
+        (4, 174, 214, 18, 43, 94, 128),
+        (4, 174, 182, 18, 43, 94, 128),
+        (4, 129, 80, 18, 43, 94, 128)]
+songs = {0: "shapka.mp3",
+         1: "vorona.mp3",
+         2: "vinni-puh.mp3",
+         3: "buratino.mp3",
+         4: "utyata.mp3"}
 
 def play_song(song_id):
     global songs
@@ -37,16 +40,14 @@ def cb_state_changed(state, idle, nr):
         if state == nr.STATE_REQUEST_TAG_ID_READY:
             ret = nr.get_tag_id()
             global last_seen_tag
-            global tag_a
+            global tags
             if ret != last_seen_tag:
-                #print("Found tag of type " + str(ret.tag_type) + " " + str(ret) + " with ID [" +
-                #      " ".join(map(str, map(hex, ret.tid[:ret.tid_length]))) + "]")
-                if tag_black == ret.tid:
-                    print("Tag Black")
-                    play_song(1)
-                elif tag_red == ret.tid:
-                    print("Tag Red")
-                    play_song(2)
+                print("Found tag of type " + str(ret.tag_type) + " " + str(ret) + " with ID [" +
+                      " ".join(map(str, map(hex, ret.tid[:ret.tid_length]))) + "]")
+                if ret.tid in tags:
+                    ind = tags.index(ret.tid)
+                    print("Tag number " + str(ind))
+                    play_song(ind)
                 else:
                     print("Unknown tag")
             last_seen_tag = ret
