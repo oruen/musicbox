@@ -1,0 +1,40 @@
+wget http://download.tinkerforge.com/tools/brickd/linux/brickd_linux_latest_armhf.deb
+sudo dpkg -I brickd_linux_latest_armhf.deb
+# https://www.tinkerforge.com/de/doc/Downloads.html#downloads-tools
+wget http://download.tinkerforge.com/bindings/python/tinkerforge_python_bindings_2_1_21.zip
+unzip tinkerforge_python_bindings_2_1_21.zip
+sudo apt-get install python-pip
+pip install tinker forge
+sudo apt-get install vim
+Python brick/master/example_check_status.py
+python example_enumerate.py
+sudo apt-get update
+sudo systemctl enable mopidy
+mkdir music
+cd music
+# /home/pi/music
+wget http://www.hochmuth.com/mp3/Boccherini_Concerto_478-1.mp3
+wget http://www.hochmuth.com/mp3/Beethoven_12_Variation.mp3
+sudo cp ./* /var/lib/mopidy/media
+
+mopidy local scan
+# pip install Mopidy-API-Explorer
+# Sudo apt-get install elinks
+# elinks http://localhost:6680/api_explorer
+sudo apt-get install ncmpcpp
+
+Alsamixer # check output device
+Raspi-config # check audio output
+
+# Play:
+
+curl -d '{"jsonrpc": "2.0", "id": 1, "method": "core.tracklist.add", "params": {"uri": "file:///var/lib/mopidy/media/Boccherini_Concerto_478-1.mp3"}}' -H 'Content-Type: application-json' http://localhost:6680/mopidy/rpc
+
+curl -d '{"jsonrpc": "2.0", "id": 1, "method": "core.playback.play"}' -H 'Content-Type: application-json' http://localhost:6680/mopidy/rpc
+
+# Stop:
+curl -d '{"jsonrpc": "2.0", "id": 1, "method": "core.playback.stop"}' -H 'Content-Type: application-json' http://localhost:6680/mopidy/rpc
+
+# Systemd config
+/lib/systemd/system/player.service
+
